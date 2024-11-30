@@ -1,9 +1,9 @@
 from typing import Sequence, Union
-from alembic.op import execute, create_table, drop_table
-from sqlalchemy import Column, String, Integer
-
-from enum import Enum as python_enum_t
-from sqlalchemy import Enum as sql_enum_t
+from alembic import op
+import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
+import json
+from sqlalchemy.sql import table, column
 
 revision: str = '667da6064809'
 down_revision: Union[str, None] = None
@@ -11,73 +11,91 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
-class FuncBlockEnum(python_enum_t):
-    CORPORATE = 'Корпоративный блок'
-    RETAIL = 'Розничный блок'
+func_block_enum = postgresql.ENUM(
+    'Корпоративный блок', 'Розничный блок', "", name="funcblockenum")
 
+division4_enum = postgresql.ENUM('Дополнительный офис 1', 'Дополнительный офис 2',
+                                 'Дополнительный офис 3', 'Дополнительный офис 4', "", name="division4enum")
 
-class Division4Enum(python_enum_t):
-    OFFICE1 = 'Дополнительный офис 1'
-    OFFICE2 = 'Дополнительный офис 2'
-    OFFICE3 = 'Дополнительный офис 3'
-    OFFICE4 = 'Дополнительный офис 4'
+role_enum = postgresql.ENUM('руководство', 'Дизайнер', 'аналитика', 'backend',
+                            'frontend', 'тестирование', 'бэк-офис', 'продажи', 'обслуживание', name="roleenum")
 
-
-class RoleEnum(python_enum_t):
-    LEADERSHIP = 'руководство'
-    DESIGNER = 'Дизайнер'
-    ANALYST = 'аналитика'
-    BACKEND = 'backend'
-    FRONTEND = 'frontend'
-    TESTER = 'тестирование'
-    BACKOFFICE = 'бэк-офис'
-    SALES = 'продажи'
-    SERVICE = 'обслуживание'
-
-
-class UserPermissionEnum(python_enum_t):
-    USER = 'user'
-    ADMIN = 'admin'
+user_permission_enum = postgresql.ENUM(
+    'user', 'admin', name="userpermissionenum")
 
 
 def upgrade():
-    create_table(
+    op.create_table(
         'staff_public',
-        Column('id', Integer(), primary_key=True, autoincrement=True),
-        Column('func_block', sql_enum_t(FuncBlockEnum), nullable=False),
-        Column('division1', String(100), nullable=False),
-        Column('division2', String(100), nullable=False),
-        Column('division3', String(100), nullable=False),
-        Column('division4', sql_enum_t(Division4Enum), nullable=False),
+        sa.Column('id', sa.Integer(), primary_key=True, autoincrement=True),
+        sa.Column('func_block', func_block_enum, nullable=False),
+        sa.Column('division1', sa.String(100), nullable=False),
+        sa.Column('division2', sa.String(100), nullable=False),
+        sa.Column('division3', sa.String(100), nullable=False),
+        sa.Column('division4', division4_enum, nullable=False),
 
-        Column('post', String(100), nullable=False),
-        Column('role', sql_enum_t(RoleEnum), nullable=False),
-        Column('lname', String(100), nullable=False),
-        Column('fname', String(100), nullable=False),
+        sa.Column('post', sa.String(100), nullable=False),
+        sa.Column('role', role_enum, nullable=False),
+        sa.Column('lname', sa.String(100), nullable=False),
+        sa.Column('fname', sa.String(100), nullable=False),
     )
 
-    create_table(
+    op.create_table(
         'staff_private',
-        Column('id', Integer(), primary_key=True, autoincrement=True),
-        Column('phone', Integer(), nullable=False),
-        Column('city', String(100), nullable=False),
-        Column('address', String(300), nullable=False),
-        Column('mail', String(100), nullable=False),
+        sa.Column('id', sa.Integer(), primary_key=True, autoincrement=True),
+        sa.Column('phone', sa.BigInteger(), nullable=False),
+        sa.Column('city', sa.String(100), nullable=False),
+        sa.Column('address', sa.String(300), nullable=False),
+        sa.Column('mail', sa.String(100), nullable=False),
     )
 
-    with open('processed_mtslink.sql', 'r') as mtslink_data:
-        execute(mtslink_data.read())
+    staff_private_table = table(
+        'staff_private',
+        column('id', sa.Integer),
+        column('phone', sa.BigInteger),
+        column('city', sa.String),
+        column('address', sa.String),
+        column('mail', sa.String),
+    )
 
-    create_table(
+    staff_public_table = table(
+        'staff_public',
+        column('id', sa.Integer),
+        column('func_block', func_block_enum),
+        column('division1', sa.String),
+        column('division2', sa.String),
+        column('division3', sa.String),
+        column('division4', division4_enum),
+        column('post', sa.String),
+        column('role', role_enum),
+        column('lname', sa.String),
+        column('fname', sa.String),
+    )
+
+    with open('staff_public.json', 'r') as public_data:
+        data_public = json.load(public_data)
+    op.bulk_insert(
+        staff_public_table,
+        data_public
+    )
+
+    with open('staff_private.json', 'r') as mtslink_data:
+        data = json.load(mtslink_data)
+    op.bulk_insert(
+        staff_private_table,
+        data
+    )
+
+    op.create_table(
         'users',
-        Column('id', Integer(), primary_key=True, autoincrement=True),
-        Column('username', String(length=100), nullable=False),
-        Column('password', String(length=100), nullable=False),
-        Column('permission', python_enum_t(UserPermissionEnum, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
+        sa.Column('id', sa.Integer(), primary_key=True, autoincrement=True),
+        sa.Column('username', sa.String(length=100), nullable=False),
+        sa.Column('password', sa.String(length=100), nullable=False),
+        sa.Column('permission', user_permission_enum, nullable=False)
     )
 
 
 def downgrade():
-    drop_table('staff_public')
-    drop_table('staff_private')
-    drop_table('users')
+    op.drop_table('staff_public')
+    op.drop_table('staff_private')
+    op.drop_table('users')
