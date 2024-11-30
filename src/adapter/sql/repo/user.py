@@ -27,6 +27,7 @@ class UserRepository():
 
             return True
         
+
     async def login(self, user: UserDTO) -> bool:
         tmp = await self.is_user_exists(user)
         if UserDTO.is_eq_users(user, tmp):

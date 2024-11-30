@@ -1,5 +1,4 @@
 from src.enums import UserPermissionEnum
-from hashlib import sha256
 from dataclasses import dataclass
 
 
