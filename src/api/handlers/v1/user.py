@@ -1,19 +1,31 @@
 from fastapi import APIRouter
-from src.schema.user import RegisterUserRequest
+from src.schema.user import SingUpUserRequest, LoginUserRequest
 from src.adapter.sql.repo.user import UserRepository
 from src.adapter.sql.session import Database
-from src.dto.user_dto import UserDTO
+from src.dto.user_dto import UserDTO, process_password
 router = APIRouter(prefix="/user", tags=["User"])
 repo = UserRepository(Database().session)
 
 
-@router.post("")
-async def register_user(request: RegisterUserRequest):
+@router.post("singup")
+async def singup_user(request: SingUpUserRequest):
     return await repo.singup(
         UserDTO(
             id=request.id,
             username=request.username,
-            password=request.password,
+            password=process_password(request.password),
+            permission=request.permission
+        )
+    )
+
+
+@router.post("login")
+async def login_user(request: LoginUserRequest):
+    return await repo.login(
+        UserDTO(
+            id=request.id,
+            username=request.username,
+            password=process_password(request.password),
             permission=request.permission
         )
     )
