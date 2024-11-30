@@ -32,6 +32,7 @@ services:
       - "5000:5000"
     networks:
       - db
+      - front
 
 volumes:
   pgdata:
