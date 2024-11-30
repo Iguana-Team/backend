@@ -1,17 +1,16 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Callable
 from contextlib import AbstractAsyncContextManager
-from src.enums import UserPermissionEnum
-
+from src.dto.user_dto import UserDTO
 
 class UserRepository():
-    def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]):
+    def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]) -> None:
         self.session_factory = session_factory
 
 
-    async def add_user(self, username: str, password: str, permission: UserPermissionEnum):
+    async def add_user(self, rhs: UserDTO) -> None:
         async with self.session_factory() as session:
             await session.commit()
 
-    async def is_user_exist(self, username: str, password: str, permission: UserPermissionEnum):
+    async def is_user_exist(self, rhs: UserDTO) -> None:
         pass
