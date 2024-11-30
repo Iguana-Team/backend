@@ -1,4 +1,3 @@
-from staff import User
 from src.enums import UserPermissionEnum
 
 class UserDTO:
@@ -7,10 +6,10 @@ class UserDTO:
     password: str
     permission: UserPermissionEnum
 
-    def __init__(self, id: str, username: str, password: str, permission: UserPermissionEnum) -> None:
-        self.id = id
-        self.username = username
-        self.permission = permission
+    def __init__(self, **kwargs) -> None:
+        self.id = kwargs.get('id')
+        self.username = kwargs.get('username')
+        self.permission = kwargs.get('permission')
 
     def to_dict(self) -> dict:
         return self.__dict__;
