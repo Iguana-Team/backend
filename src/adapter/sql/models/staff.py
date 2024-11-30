@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, BigInteger, Enum
 from src.adapter.sql.base import Base
-from enums import FuncBlockEnum, Division4Enum, RoleEnum, UserPermissionEnum
+from src.enums import FuncBlockEnum, Division4Enum, RoleEnum, UserPermissionEnum
 
 
 class StaffPublic(Base):
