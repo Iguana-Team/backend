@@ -13,14 +13,14 @@ class UserPermissionEnum(enum.Enum):
     ADMIN = 'admin'
 
 def upgrade():
-    with open("mtslink.sql", "r") as mtslink:
+    with open('processed_mtslink.sql', 'r') as mtslink:
         execute(mtslink.read())
 
     create_table(
         'users',
-        Column('id', Integer(), nullable=False, autoincrement=True),
-        Column('username', String(length=50), nullable=False),
-        Column('password', String(length=50), nullable=False),
+        Column('id', Integer(), primary_key=True, autoincrement=True),
+        Column('username', String(length=100), nullable=False),
+        Column('password', String(length=100), nullable=False),
         Column('permission', Enum(UserPermissionEnum), nullable=False)
     )
 

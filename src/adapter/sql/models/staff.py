@@ -30,7 +30,7 @@ class Users(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(length=50), nullable=False),
-    password = Column(String(length=50), nullable=False),
+    username = Column(String(length=100), nullable=False),
+    password = Column(String(length=100), nullable=False),
     permission = Column(Enum(UserPermissionEnum), nullable=False)
 
