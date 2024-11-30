@@ -1,5 +1,6 @@
 from src.enums import FuncBlockEnum, Division4Enum, RoleEnum
 
+
 class StaffPublicDTO:
     id: int
     func_block: FuncBlockEnum
@@ -25,8 +26,4 @@ class StaffPublicDTO:
         self.fname = kwargs.get('rname')
 
     def to_dict(self) -> dict:
-        return self.__dict__;
-
-    @classmethod
-    def from_dict(user: StaffPublicDTO, data: dict) -> StaffPublicDTO: # type: ignore
-        return user(**data)
+        return self.__dict__

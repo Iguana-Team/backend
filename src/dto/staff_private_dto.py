@@ -1,4 +1,4 @@
-class StaffPublicDTO:
+class StaffPrivateDTO:
     id: int
     phone: int
     city: str
@@ -13,8 +13,4 @@ class StaffPublicDTO:
         self.mail = kwargs.get('mail')
 
     def to_dict(self) -> dict:
-        return self.__dict__;
-
-    @classmethod
-    def from_dict(user: StaffPrivateDTO, data: dict) -> StaffPrivateDTO: # type: ignore
-        return user(**data)
+        return self.__dict__
