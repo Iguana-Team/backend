@@ -44,8 +44,8 @@ role_enum = postgresql.ENUM(
 
 
 user_permission_enum = postgresql.ENUM(
-    'user',
-    'admin',
+    'USER',
+    'ADMIN',
     name="userpermissionenum"
 )
 

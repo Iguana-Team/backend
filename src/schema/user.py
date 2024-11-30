@@ -1,10 +1,9 @@
+from pydantic import BaseModel
+from src.dto.user_dto import UserDTO
 from src.enums import UserPermissionEnum
-from hashlib import sha256
-from dataclasses import dataclass
 
 
-@dataclass
-class UserDTO:
+class RegisterUserRequest(BaseModel):
     id: int
     username: str
     password: str
