@@ -3,6 +3,7 @@ from enum import Enum
 class FuncBlockEnum(Enum):
     CORPORATE = 'Корпоративный блок'
     RETAIL = 'Розничный блок'
+    NULL = ''
 
 
 class Division4Enum(Enum):
@@ -10,6 +11,7 @@ class Division4Enum(Enum):
     OFFICE2 = 'Дополнительный офис 2'
     OFFICE3 = 'Дополнительный офис 3'
     OFFICE4 = 'Дополнительный офис 4'
+    NULL = ''
 
 
 class RoleEnum(Enum):
@@ -22,8 +24,10 @@ class RoleEnum(Enum):
     BACKOFFICE = 'бэк-офис'
     SALES = 'продажи'
     SERVICE = 'обслуживание'
+    NULL = ''
 
 
 class UserPermissionEnum(Enum):
     USER = 'user'
     ADMIN = 'admin'
+    NULL = ''

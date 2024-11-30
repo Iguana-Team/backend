@@ -12,16 +12,42 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 func_block_enum = postgresql.ENUM(
-    'Корпоративный блок', 'Розничный блок', "", name="funcblockenum")
+    'Корпоративный блок',
+    'Розничный блок',
+    "",
+    name="funcblockenum"
+)
 
-division4_enum = postgresql.ENUM('Дополнительный офис 1', 'Дополнительный офис 2',
-                                 'Дополнительный офис 3', 'Дополнительный офис 4', "", name="division4enum")
 
-role_enum = postgresql.ENUM('руководство', 'Дизайнер', 'аналитика', 'backend',
-                            'frontend', 'тестирование', 'бэк-офис', 'продажи', 'обслуживание', name="roleenum")
+division4_enum = postgresql.ENUM(
+    'Дополнительный офис 1',
+    'Дополнительный офис 2',
+    'Дополнительный офис 3',
+    'Дополнительный офис 4',
+    "",
+    name="division4enum"
+)
+
+
+role_enum = postgresql.ENUM(
+    'руководство',
+    'Дизайнер',
+    'аналитика',
+    'backend',
+    'frontend',
+    'тестирование',
+    'бэк-офис',
+    'продажи',
+    'обслуживание',
+    name="roleenum"
+)
+
 
 user_permission_enum = postgresql.ENUM(
-    'user', 'admin', name="userpermissionenum")
+    'user',
+    'admin',
+    name="userpermissionenum"
+)
 
 
 def upgrade():
