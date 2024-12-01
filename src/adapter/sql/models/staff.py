@@ -7,13 +7,13 @@ class StaffPublic(Base):
     __tablename__ = 'staff_public'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    func_block = Column(Enum(FuncBlockEnum), nullable=False)
+    func_block = Column(String(100), nullable=False)
     division1 = Column(String(100), nullable=False)
     division2 = Column(String(100), nullable=False)
     division3 = Column(String(100), nullable=False)
-    division4 = Column(Enum(Division4Enum), nullable=False)
+    division4 = Column(String(100), nullable=False)
     post = Column(String(100), nullable=False)
-    role = Column(Enum(RoleEnum), nullable=False)
+    role = Column(String(100), nullable=False)
     lname = Column(String(100), nullable=False)
     fname = Column(String(100), nullable=False)
 

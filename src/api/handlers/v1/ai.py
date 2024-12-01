@@ -7,10 +7,12 @@ from typing import List
 router = APIRouter(prefix="/ai", tags=["AI"])
 repo = AIModelRepository(Database().session)
 
+import logging
+logger = logging.getLogger('unicorn.error')
 
 @router.post("staff")
-async def match_staff(request: StaffPublicRequest) -> List[StaffPublicDTO]:
-    return await repo.match_staff(
+async def match_staff(request: StaffPublicRequest) -> list:
+    tmp = await repo.match_staff(
         StaffPublicDTO(
             id=request.id,
             func_block=request.func_block,
@@ -24,3 +26,6 @@ async def match_staff(request: StaffPublicRequest) -> List[StaffPublicDTO]:
             fname=request.fname
         )
     )
+    logger.info(tmp)
+    logger.info("uhkagsvdadsfvlkashdfvjlahdfvljdhfvJLHFVJ")
+    return tmp
