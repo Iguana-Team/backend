@@ -3,14 +3,16 @@ from src.schema.ai import StaffPublicRequest
 from src.dto.staff_public_dto import StaffPublicDTO
 from src.adapter.sql.repo.ai import AIModelRepository
 from src.adapter.sql.session import Database
+from typing import List 
 router = APIRouter(prefix="/ai", tags=["AI"])
 repo = AIModelRepository(Database().session)
 
 
 @router.post("staff")
-async def match_staff(request: StaffPublicRequest):
-    return await AIModelRepository.match_staff(
+async def match_staff(request: StaffPublicRequest) -> List[StaffPublicDTO]:
+    return await repo.match_staff(
         StaffPublicDTO(
+            id=request.id,
             func_block=request.func_block,
             division1=request.division1,
             division2=request.division2,
