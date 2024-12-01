@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import Callable, Optional
 from contextlib import AbstractAsyncContextManager
-from src.dto.user_dto import UserDTO, is_user_valid, process_password
+from src.dto.user_dto import UserDTO, is_user_valid
 from src.adapter.sql.models.staff import Users
 
 
@@ -10,12 +10,11 @@ class UserRepository():
     def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]) -> None:
         self.session_factory = session_factory
 
-
     async def singup(self, user: UserDTO) -> bool:
         async with self.session_factory() as session:
             if await self.is_user_exists(user):
                 return False
-            
+
             new_user = Users(
                 username=user.username,
                 password=user.password,
@@ -25,7 +24,6 @@ class UserRepository():
             await session.commit()
 
             return True
-        
 
     async def login(self, user: UserDTO) -> bool:
         tmp = await self.find_user(user)
@@ -33,15 +31,13 @@ class UserRepository():
             return False
         return is_user_valid(user, tmp)
 
-
     async def is_user_exists(self, user: UserDTO) -> bool:
-        if user == None:
+        if user is None:
             return False
-        return await self.find_user(user) != None
-
+        return await self.find_user(user) is not None
 
     async def find_user(self, user: UserDTO) -> Optional[UserDTO]:
-        if user == None:
+        if user is None:
             return None
         async with self.session_factory() as session:
             tmp = await session.execute(select(Users).filter_by(username=user.username))

@@ -120,6 +120,14 @@ def upgrade():
         sa.Column('permission', user_permission_enum, nullable=False)
     )
 
+    op.create_table(
+        'models',
+        sa.Column('id', sa.Integer(), primary_key=True, autoincrement=True),
+        sa.Column('model', sa.LargeBinary(), nullable=False),
+        sa.Column('created_at', sa.TIMESTAMP(),
+                  server_default=sa.func.now(), nullable=False)
+    )
+
 
 def downgrade():
     op.drop_table('staff_public')
