@@ -3,6 +3,7 @@ from src.schema.user import SingUpUserRequest, LoginUserRequest
 from src.adapter.sql.repo.user import UserRepository
 from src.adapter.sql.session import Database
 from src.dto.user_dto import UserDTO, process_password
+from enums import UserPermissionEnum
 router = APIRouter(prefix="/user", tags=["User"])
 repo = UserRepository(Database().session)
 
@@ -11,7 +12,7 @@ repo = UserRepository(Database().session)
 async def signup_user(request: SingUpUserRequest):
     return await repo.signup(
         UserDTO(
-            id=request.id,
+            id=0,
             username=request.username,
             password=process_password(request.password),
             permission=request.permission
@@ -23,9 +24,9 @@ async def signup_user(request: SingUpUserRequest):
 async def login_user(request: LoginUserRequest):
     return await repo.login(
         UserDTO(
-            id=request.id,
+            id=0,
             username=request.username,
             password=process_password(request.password),
-            permission=request.permission
+            permission=UserPermissionEnum.NULL
         )
     )

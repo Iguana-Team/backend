@@ -13,7 +13,7 @@ repo = AIModelRepository(Database().session)
 async def match_staff(request: StaffPublicRequest) -> list:
     tmp = await repo.match_staff(
         StaffPublicDTO(
-            id=request.id,
+            id=0,
             func_block=request.func_block,
             division1=request.division1,
             division2=request.division2,

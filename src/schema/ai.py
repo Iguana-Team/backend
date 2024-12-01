@@ -4,7 +4,6 @@ from src.enums import FuncBlockEnum, Division4Enum, RoleEnum
 
 @dataclass
 class StaffPublicRequest:
-    id: int
     func_block: FuncBlockEnum
     division1: str
     division2: str

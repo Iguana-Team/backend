@@ -5,7 +5,6 @@ from src.enums import UserPermissionEnum
 
 @dataclass
 class SingUpUserRequest(BaseModel):
-    id: int
     username: str
     password: str
     permission: UserPermissionEnum
@@ -13,7 +12,5 @@ class SingUpUserRequest(BaseModel):
 
 @dataclass
 class LoginUserRequest(BaseModel):
-    id: int
     username: str
     password: str
-    permission: UserPermissionEnum
