@@ -1,18 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import desc
-from typing import Callable, Optional, List
+from typing import Callable
 from contextlib import AbstractAsyncContextManager
 from src.dto.staff_public_dto import StaffPublicDTO
 from src.service.ai.service import NearestNeighborsModel
 from src.adapter.sql.models.staff import StaffPublic
-
-from src.enums import FuncBlockEnum, Division4Enum, RoleEnum
 from os import walk
 
-class AIModelRepository:
-    model: NearestNeighborsModel
 
+class AIModelRepository:
     def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]) -> None:
         self.session_factory = session_factory
         self.model = None
@@ -20,12 +17,9 @@ class AIModelRepository:
 
 
     async def match_staff(self, staff: StaffPublicDTO) -> list:
-        await self.get_model()
-        if self.is_ready:
-            tmp = self.model.find_nearest_neighbors(staff)
-            if not tmp:
-                return [StaffPublicDTO(2, FuncBlockEnum.CORPORATE, 'sad', 'assd', 'asd', Division4Enum.OFFICE2, 'sada', 'asda','asdas', 'asd')]
-            return tmp
+        if not self.is_ready:
+            await self.get_model()
+        return self.model.find_nearest_neighbors(staff) 
 
 
     async def get_model(self) -> None:

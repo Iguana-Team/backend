@@ -7,8 +7,6 @@ from typing import List
 router = APIRouter(prefix="/ai", tags=["AI"])
 repo = AIModelRepository(Database().session)
 
-import logging
-logger = logging.getLogger('unicorn.error')
 
 @router.post("staff")
 async def match_staff(request: StaffPublicRequest) -> list:
@@ -26,6 +24,8 @@ async def match_staff(request: StaffPublicRequest) -> list:
             fname=request.fname
         )
     )
-    logger.info(tmp)
-    logger.info("uhkagsvdadsfvlkashdfvjlahdfvljdhfvJLHFVJ")
-    return tmp
+
+    res = []
+    for staff in tmp:
+        res += [staff.to_dict()]
+    return res

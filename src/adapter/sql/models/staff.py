@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, BigInteger, Enum
 from src.adapter.sql.base import Base
-from src.enums import FuncBlockEnum, Division4Enum, RoleEnum, UserPermissionEnum
+from src.enums import UserPermissionEnum
 
 
 class StaffPublic(Base):
@@ -16,6 +16,21 @@ class StaffPublic(Base):
     role = Column(String(100), nullable=False)
     lname = Column(String(100), nullable=False)
     fname = Column(String(100), nullable=False)
+
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "func_block": self.func_block,
+            "division1": self.division1,
+            "division2": self.division2,
+            "division3": self.division3,
+            "division4": self.division4,
+            "post": self.post,
+            "role": self.role,
+            "lname": self.lname,
+            "fname": self.fname
+        }
 
 
 class StaffPrivate(Base):
