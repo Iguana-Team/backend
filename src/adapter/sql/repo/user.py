@@ -10,7 +10,7 @@ class UserRepository():
     def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]) -> None:
         self.session_factory = session_factory
 
-    async def singup(self, user: UserDTO) -> bool:
+    async def signup(self, user: UserDTO) -> bool:
         async with self.session_factory() as session:
             if await self.is_user_exists(user):
                 return False

@@ -43,6 +43,16 @@ class StaffPrivate(Base):
     mail = Column(String(100), nullable=False)
 
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "phone": self.phone,
+            "city": self.city,
+            "address": self.city,
+            "mail": self.mail
+        }
+
+
 class Users(Base):
     __tablename__ = 'users'
 

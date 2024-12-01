@@ -1,14 +1,15 @@
 from fastapi import APIRouter
-from src.schema.ai import StaffPublicRequest
+from src.schema.ai import StaffPublicRequest, StaffPrivateRequest
 from src.dto.staff_public_dto import StaffPublicDTO
+from src.dto.staff_private_dto import StaffPrivateDTO
+from src.dto.user_dto import UserDTO, process_password
 from src.adapter.sql.repo.ai import AIModelRepository
 from src.adapter.sql.session import Database
-from typing import List 
 router = APIRouter(prefix="/ai", tags=["AI"])
 repo = AIModelRepository(Database().session)
 
 
-@router.post("staff")
+@router.post("/staff_public")
 async def match_staff(request: StaffPublicRequest) -> list:
     tmp = await repo.match_staff(
         StaffPublicDTO(
@@ -29,3 +30,17 @@ async def match_staff(request: StaffPublicRequest) -> list:
     for staff in tmp:
         res += [staff.to_dict()]
     return res
+
+@router.post("/staff_private")
+async def get_private_info(request: StaffPrivateRequest) -> StaffPrivateDTO:
+    tmp = await repo.get_private_info(
+        UserDTO(
+            id=0,
+            username=request.username,
+            password=process_password(request.password),
+            permission=''
+        ),
+        staff_id=int(request.staff_id)
+    )
+
+    return tmp

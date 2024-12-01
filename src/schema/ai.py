@@ -14,3 +14,9 @@ class StaffPublicRequest:
     role: RoleEnum
     lname: str
     fname: str
+
+@dataclass
+class StaffPrivateRequest:
+    username: str
+    password: str
+    staff_id: str

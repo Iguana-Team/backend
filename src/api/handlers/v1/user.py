@@ -7,9 +7,9 @@ router = APIRouter(prefix="/user", tags=["User"])
 repo = UserRepository(Database().session)
 
 
-@router.post("singup")
-async def singup_user(request: SingUpUserRequest):
-    return await repo.singup(
+@router.post("/signup")
+async def signup_user(request: SingUpUserRequest):
+    return await repo.signup(
         UserDTO(
             id=request.id,
             username=request.username,
@@ -19,7 +19,7 @@ async def singup_user(request: SingUpUserRequest):
     )
 
 
-@router.post("login")
+@router.post("/login")
 async def login_user(request: LoginUserRequest):
     return await repo.login(
         UserDTO(
