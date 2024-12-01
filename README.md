@@ -2,6 +2,14 @@
 ## plain
 
 ```bash
+создать .env файл и заполнить его
+Пример заполненного файла:
+    POSTGRES_HOST=postgres
+    POSTGRES_PORT=5432
+    POSTGRES_DB=mtslink
+    POSTGRES_PASSWORD=postgres
+    POSTGRES_USERNAME=postgres
+
 python -m venv venv
 
 source venv/bin/activate
