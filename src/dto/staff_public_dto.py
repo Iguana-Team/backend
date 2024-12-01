@@ -9,7 +9,7 @@ class StaffPublicDTO:
     division1: str
     division2: str
     division3: str
-    division4 = Division4Enum
+    division4: Division4Enum
     post: str
     role: RoleEnum
     lname: str
