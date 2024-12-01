@@ -3,7 +3,7 @@ from src.schema.user import SingUpUserRequest, LoginUserRequest
 from src.adapter.sql.repo.user import UserRepository
 from src.adapter.sql.session import Database
 from src.dto.user_dto import UserDTO, process_password
-from enums import UserPermissionEnum
+from src.enums import UserPermissionEnum
 router = APIRouter(prefix="/user", tags=["User"])
 repo = UserRepository(Database().session)
 

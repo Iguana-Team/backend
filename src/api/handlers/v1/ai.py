@@ -33,7 +33,7 @@ async def match_staff(request: StaffPublicRequest) -> list:
 
 @router.post("/staff_private")
 async def get_private_info(request: StaffPrivateRequest) -> StaffPrivateDTO:
-    tmp = await repo.get_private_info(
+    return await repo.get_private_info(
         UserDTO(
             id=0,
             username=request.username,
@@ -42,5 +42,3 @@ async def get_private_info(request: StaffPrivateRequest) -> StaffPrivateDTO:
         ),
         staff_id=int(request.staff_id)
     )
-
-    return tmp
