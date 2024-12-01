@@ -48,5 +48,6 @@ class NearestNeighborsModel:
 model = NearestNeighborsModel(data)
 model.fit()
 
-nearest_neighbors = model.find_nearest_neighbors(input_data)
-print(nearest_neighbors)
+model.save_model('model.pkl')
+loaded_model = NearestNeighborsModel.load_model('model.pkl')
+nearest_neighbors = loaded_model.find_nearest_neighbors(input_data)
