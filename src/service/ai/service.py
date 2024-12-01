@@ -19,11 +19,13 @@ class NearestNeighborsModel:
     def get_columns(self):
         return [field.name for field in StaffPublicDTO.__dataclass_fields__.values()]
 
+    #обучение
     def fit(self):
         data_matrix = [[getattr(row, col) for col in self.columns] for row in self.data]
         self.encoded_data = self.encoder.fit_transform(data_matrix).toarray()
         self.nn.fit(self.encoded_data)
 
+    #получение результата
     def find_nearest_neighbors(self, input_data: StaffPublicDTO):
         input_data = [getattr(input_data, col, 'None') for col in self.columns]
         encoded_input_data = self.encoder.transform([input_data]).toarray()
@@ -45,9 +47,9 @@ class NearestNeighborsModel:
             return pickle.load(file)
 
 
-model = NearestNeighborsModel(data)
-model.fit()
+# model = NearestNeighborsModel(data)
+# model.fit()
 
-model.save_model('model.pkl')
-loaded_model = NearestNeighborsModel.load_model('model.pkl')
-nearest_neighbors = loaded_model.find_nearest_neighbors(input_data)
+# model.save_model('model.pkl')
+# loaded_model = NearestNeighborsModel.load_model('model.pkl')
+# nearest_neighbors = loaded_model.find_nearest_neighbors(input_data)
