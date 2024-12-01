@@ -15,4 +15,6 @@ python main.py
 
 ```bash
 docker compose up --build
+
+docker exec -it backend-iguana-api-1 alembic upgrade head #только при первом запуске
 ```
