@@ -25,14 +25,14 @@ class NearestNeighborsModel:
         self.encoded_data = self.encoder.fit_transform(data_matrix).toarray()
         self.nn.fit(self.encoded_data)
 
-    #получение результата
+    #получение результата 
     def find_nearest_neighbors(self, input_data: StaffPublicDTO):
         input_data = [getattr(input_data, col, 'None') for col in self.columns]
         encoded_input_data = self.encoder.transform([input_data]).toarray()
-        # indeces - индексы нужных нам соседей из изначальной бд. 
-        indices = self.nn.kneighbors(encoded_input_data)
-        nearest_neighbors = [self.data[index] for index in indices[0]]
+        _, indices = self.nn.kneighbors(encoded_input_data)
+        nearest_neighbors = [self.data[idx] for idx in indices[0]]
         return nearest_neighbors
+
 
     def add_data(self, new_data: List[StaffPublicDTO]):
         self.data.extend(new_data)
